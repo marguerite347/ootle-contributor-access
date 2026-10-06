@@ -1,0 +1,30 @@
+name: Invite contributors
+on:
+  issues:
+    types: [opened, reopened]
+  workflow_dispatch:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+permissions:
+  contents: read
+  issues: write
+concurrency:
+  group: contributor-enrollment
+  cancel-in-progress: false
+jobs:
+  enroll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: main
+          persist-credentials: false
+      - run: python3 -m unittest -v test_invite.py
+      - name: Process authenticated access requests
+        env:
+          INVITER_TOKEN: ${{ secrets.INVITER_TOKEN }}
+          QUEUE_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ENROLLMENT_OPEN: ${{ vars.ENROLLMENT_OPEN || 'true' }}
+        run: python3 invite.py
