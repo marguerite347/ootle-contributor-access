@@ -126,7 +126,7 @@ def run(queue, inviter, enabled, issue_number=None):
             message = '\n'.join([
                 f'@{login}, your request has been processed automatically.', '',
                 *[f'- [{repo.split("/")[1]}](https://github.com/{repo}/invitations): {status}.' for repo, status in result.items()],
-                '', 'Accept each pending GitHub invitation to activate push access. You and agents acting through your account may then commit, push and merge under the interim open-development policy.',
+                '', 'Accept each pending GitHub invitation to activate push access. Collaborators and their agents must follow the current reviewed contribution policy.',
                 '', 'This grants repository write access; your agent still needs your own GitHub authentication.'])
             queue.call('POST', f'/repos/{CONTROL}/issues/{issue["number"]}/comments', {'body': message})
             queue.call('PATCH', f'/repos/{CONTROL}/issues/{issue["number"]}', {'state': 'closed', 'state_reason': 'completed'})
@@ -139,7 +139,7 @@ def run(queue, inviter, enabled, issue_number=None):
 
 if __name__ == '__main__':
     policy = json.loads(Path('policy.json').read_text())
-    enabled = policy.get('enrollment_open') is True and os.environ.get('ENROLLMENT_OPEN', 'true').lower() != 'false'
+    enabled = policy.get('enrollment_open') is True and os.environ.get('ENROLLMENT_OPEN', 'false').lower() == 'true'
     if enabled and (not os.environ.get('INVITER_TOKEN') or not os.environ.get('QUEUE_TOKEN')):
         raise SystemExit('Invitation credentials are not configured. No access has been granted.')
     try:

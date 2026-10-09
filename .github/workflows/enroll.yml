@@ -1,10 +1,6 @@
 name: Invite contributors
 on:
-  issues:
-    types: [opened, reopened]
   workflow_dispatch:
-  schedule:
-    - cron: '7,22,37,52 * * * *'
 permissions:
   contents: read
   issues: write
@@ -26,5 +22,5 @@ jobs:
           INVITER_TOKEN: ${{ secrets.INVITER_TOKEN }}
           QUEUE_TOKEN: ${{ github.token }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
-          ENROLLMENT_OPEN: ${{ vars.ENROLLMENT_OPEN || 'true' }}
+          ENROLLMENT_OPEN: ${{ vars.ENROLLMENT_OPEN || 'false' }}
         run: python3 invite.py

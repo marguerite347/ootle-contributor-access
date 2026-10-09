@@ -1,5 +1,5 @@
 {
-  "enrollment_open": true,
-  "effective_date": "2026-10-06",
-  "policy": "Invite every GitHub user who requests access to both public Ootle development repositories until the owner changes this policy."
+  "enrollment_open": false,
+  "effective_date": "2026-10-09",
+  "policy": "Automatic enrollment is closed. Contributors use fork-based pull requests; the owner grants trusted collaborator access individually."
 }

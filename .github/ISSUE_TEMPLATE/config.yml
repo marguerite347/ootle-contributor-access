@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Contribute to Lobby
+    url: https://github.com/marguerite347/ootle-lobby-community/blob/main/CONTRIBUTING.md
+    about: Automatic enrollment is closed. Use a reviewed pull request.
+  - name: Contribute to Workbench
+    url: https://github.com/marguerite347/ootle-workbench/blob/ootle/CONTRIBUTING.md
+    about: Automatic enrollment is closed. Use a reviewed pull request.

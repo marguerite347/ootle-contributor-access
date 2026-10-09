@@ -1,40 +1,11 @@
-# Join Ootle development
+# Ootle contribution access
 
-[**Join Lobby and Workbench**](https://github.com/marguerite347/ootle-contributor-access/issues/new?template=join.yml)
+Automatic enrollment closed on 2026-10-09 at the owner's instruction. Opening an issue no longer grants push access. Contribute through a fork and pull request to [Lobby](https://github.com/marguerite347/ootle-lobby-community) or [Workbench](https://github.com/marguerite347/ootle-workbench). The owner grants trusted collaborator access individually.
 
-Anyone with a GitHub account can request push access to both:
+The product branches require passing checks and independent review, with owner approval for sensitive paths. Developers and agents cannot grant themselves authority or bypass these rules.
 
-- [Ootle Lobby](https://github.com/marguerite347/ootle-lobby-community), branch `main`.
-- [Ootle Workbench](https://github.com/marguerite347/ootle-workbench), branch `ootle`.
+The invitation workflow is disabled, its automatic triggers and join form are removed, the repository variable and committed policy both disable enrollment, and its INVITER_TOKEN secret has been removed. Missing enablement configuration fails closed. Removing the stored secret disables this service's use of the credential; it does not claim to revoke the underlying GitHub credential globally. At closure both product repos listed only the owner as collaborator and no pending invitations.
 
-Submit the form while signed in. The invitation workflow uses the issue author's verified GitHub identity, invites that account to both repos, and replies with acceptance links. Accept both invitations to activate write access. GitHub does not provide an account-independent invitation that can be accepted by everybody.
+The historical controller is retained for audit and tests. It is not an active request queue. Any future enrollment system requires an explicit new owner policy and an appropriately scoped credential.
 
-This is open enrollment with no individual approval until the owner changes the policy. Contributors and their agents can create branches, commit, push directly and merge changes. Agents use the contributor's own authorized GitHub account. Branch review and status checks are advisory during this phase; run relevant checks and report failures honestly. Force pushes and deletion of shared history are not part of normal development.
-
-An agent can request access through the same form or GitHub CLI:
-
-```sh
-gh issue create --repo marguerite347/ootle-contributor-access \
-  --title 'Join Lobby and Workbench' \
-  --body '- [x] I request push access to both Ootle repositories.'
-```
-
-The issue-open event starts processing. A scheduled run retries open requests every 15 minutes; GitHub scheduling and API limits can delay it. GitHub currently limits personal-repository invitations to 50 per repository per 24 hours. Invitations still need recipient acceptance. Errors remain visible in Actions and the request stays open for retry.
-
-## Owner controls
-
-This controller repository is separate from the two open-write product repositories. Applicants get no write access here. The inviter credential is stored only as the `INVITER_TOKEN` Actions secret here; product repositories contain neither that credential nor privileged enrollment workflows. No contributor code is executed by the controller.
-
-To stop new invitations, set the repository Actions variable `ENROLLMENT_OPEN` to `false`, or change `enrollment_open` in `policy.json` to `false`. Disabling enrollment leaves existing collaborators in place; revoke existing memberships separately when changing that policy. Re-enable by setting the variable to `true` and keeping `policy.json` enabled.
-
-The controller uses an existing owner-authorized GitHub credential. It must be able to read collaborators/invitations and add collaborators to the two fixed targets. Future credential rotation can use a fine-grained token limited to those two repositories with Administration write and Metadata read, or a GitHub App with equivalent permissions. Never put the inviter credential into an open-write repository. The workflow's separate built-in `GITHUB_TOKEN` reads and replies to access requests in this controller.
-
-Future review, branch, commit and access policies are established by updating each product repository's instructions and GitHub settings. These documents do not override GitHub account security or an agent host's permission controls. Hosting accounts and wallet permissions remain separate from GitHub push access.
-
-## Validation and selection receipt
-
-Reuse GitHub's authenticated issue forms, collaborator API, CLI and hosted Actions. The missing capability is a universal native invite: the small controller translates an authenticated join request into GitHub's per-account invitations. It never derives an identity or authority from untrusted free text. Unit tests cover consent/identity, fixed targets, duplicate invitations, failures and stopping enrollment. Hosted workflow execution is recorded separately from unit tests; a successful owner request does not demonstrate acceptance by an external account.
-
-```sh
-python3 -m unittest -v test_invite.py
-```
+Validation: `python3 -m unittest -v test_invite.py`; a direct `python3 invite.py` with the committed policy must exit without API calls. Selection receipt: reuse existing GitHub controls and controller stop behavior; no replacement invitation service.
