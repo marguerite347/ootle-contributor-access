@@ -2,7 +2,7 @@
 
 Automatic enrollment closed on 2026-10-09 at the owner's instruction. Opening an issue no longer grants push access. Contribute through a fork and pull request to [Lobby](https://github.com/marguerite347/ootle-lobby-community) or [Workbench](https://github.com/marguerite347/ootle-workbench). The owner grants trusted collaborator access individually.
 
-The product branches require passing checks and independent review, with owner approval for sensitive paths. Developers and agents cannot grant themselves authority or bypass these rules.
+Ordinary contributors require passing checks and independent review, with owner approval for sensitive paths. The owner and agents using the owner GitHub identity have an explicitly authorized administrator exception. This does not reopen enrollment or grant applicants authority.
 
 The invitation workflow is disabled, its automatic triggers and join form are removed, the repository variable and committed policy both disable enrollment, and its INVITER_TOKEN secret has been removed. Missing enablement configuration fails closed. Removing the stored secret disables this service's use of the credential; it does not claim to revoke the underlying GitHub credential globally. At closure both product repos listed only the owner as collaborator and no pending invitations.
 
